@@ -1,66 +1,57 @@
 import java.util.Arrays;
 public class SortOfSort {
-    public static void main(String args[]) {
-        int[] test = {1, 5, 8, 7, 9, 2};
-        int[] expected = {7, 5, 1, 2, 8, 9};
-sortOfSort(test);
-
+    private int[] array;
+    public SortOfSort(){
+        int[] array = new int[0];
+    }
+    public SortOfSort(int[] array){
+        this.array = new int[array.length];
+        for(int i = 0; i<array.length; i++) {
+                this.array[i] = array[i];
+            }
     }
 
-    public static void sortOfSort(int[] num) {
-        int pointer1 = 0;
-        int pointer2 = num.length - 1;
-        int counter = 0;
-        while (pointer1 != pointer2 && counter < num.length-1) {//max last element
-            if (counter == 0) {
-                int max = findMaxValue(num, pointer1);
-                num[findMaxIndex(num, pointer1)] = num[pointer2];
-                num[pointer2] = max;
+        public void sortOfSort(int[] givenArray) {
 
-                counter++;
-                pointer2--;
-            }
-            if (counter % 2 == 0 || (counter / 2) % 2 ==0) {//max to the right
-                int max = findMaxValue(num, pointer1);
-                num[findMaxIndex(num, pointer1)] = num[pointer2];
-                num[pointer2] = max;
-                counter++;
-                pointer2--;
-            }
-            if(counter % 2 != 0 || (counter / 2) != 0){//max to the left
-                int max = findMaxValue(num, pointer1);
-                num[findMaxIndex(num, pointer1)] = num[pointer1];
-                num[pointer1] = max;
-                pointer1++;
-                counter++;
-            }
-        }
-        print(num);
+            int counter = 1;
+            int maxIndex;
+            int pointer1 = 0;
+            int pointer2 = givenArray.length - 1;
+            int temp;
 
-    }
-    public static int findMaxValue(int[] num, int pointer1){
-        int max = 0;
-        for(int i = 0 + pointer1; i < num.length - 1 - pointer1 ; i++){
-            if(num[i]>num[i+1]){
-                 max = num[i];
+            while (pointer1 < pointer2) {//Make sure pointers don't cross
+                maxIndex = maxIn(pointer1, pointer2, givenArray);//Find the greatest number's index during loop
+                if (counter >= 1 && counter <= 2) {//Move element to the right and control pointer2
+                    temp = givenArray[pointer2];//Save element
+                    givenArray[pointer2] = givenArray[maxIndex];//Swap elements with pointer2
+                    givenArray[maxIndex] = temp;//Swap maxIndex with saved element
+                    pointer2--;//Move pointer2 to the left
+                    counter++;//Increment counter
+                } else if (counter >= 3 && counter <= 4) {//Move element to the left and control pointer1 if
+                    temp = givenArray[pointer1];//Save element
+                    givenArray[pointer1] = givenArray[maxIndex];//Swap elements with pointer1
+                    givenArray[maxIndex] = temp;//Swap maxIndex with saved element
+                    pointer1++;//Move pointer2 to the right
+                    counter++;//increment counter
+                }
+                if (counter == 5)//Reset counters
+                    counter = 1;//Reset value
             }
+            //return(givenArray);
         }
-        return max;
-    }
-    public static int findMaxIndex(int[] num, int pointer1){
-        int max = 0;
-        for(int i = 0 + pointer1; i < num.length - 1 -pointer1 ; i++){
-            if(num[i]>num[i+1]){
-                max =  i;
+        public int maxIn(int pointer1, int pointer2, int[] nums) {//Helper method to find the index of max element
+            int max = 0;
+            int maxIndex = 0;
+            for (int i = pointer1; i <= pointer2; i++) {//find max index within the two pointers
+                if (nums[i] > max) {
+                    max = nums[i];
+                    maxIndex = i;
+                }
             }
-        }
-        return max;
-    }
-    public static void print(int[] num){
-        for(int i = 0; i<num.length; i++){
-            System.out.print(num[i]);
+            //System.out.println(maxIndex); <--- To test this method
+            return maxIndex;
         }
     }
-}
+
 
 
